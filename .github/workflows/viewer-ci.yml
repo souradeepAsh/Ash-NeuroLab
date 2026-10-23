@@ -1,0 +1,53 @@
+name: NeuroLab viewer CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "viewer/**"
+      - ".github/workflows/viewer-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "viewer/**"
+      - ".github/workflows/viewer-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neurolab-viewer-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-viewer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: viewer/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned data tools
+        run: python -m pip install -r viewer/scripts/requirements.txt
+      - name: Install viewer dependencies
+        working-directory: viewer
+        run: npm ci
+      - name: Build viewer and verify dataset
+        working-directory: viewer
+        run: npm run build
+      - name: Verify static entry points and generated data
+        run: |
+          test -s viewer/index.html
+          test -s viewer/vendor/three.module.js
+          test -s viewer/vendor/addons/controls/OrbitControls.js
+          test -s viewer/data/manifest.json
+          test -s viewer/data/neurons.json.gz
+          node --check viewer/app.js
+          node --check viewer/graph.js

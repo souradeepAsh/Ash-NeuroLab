@@ -1,0 +1,12 @@
+{
+  "name": "ash-neurolab-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs && python scripts/prepare_data.py"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  }
+}
