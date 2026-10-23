@@ -1,1 +1,4 @@
 __pycache__
+viewer/node_modules/
+viewer/vendor/
+viewer/data/
