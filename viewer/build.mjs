@@ -3,8 +3,7 @@ import { resolve, dirname } from "node:path";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const threePackage = require.resolve("three/package.json");
-const threeRoot = dirname(threePackage);
+const threeRoot = resolve(dirname(require.resolve("three")), "..");
 const vendor = resolve("vendor");
 mkdirSync(resolve(vendor, "addons/controls"), { recursive: true });
 cpSync(resolve(threeRoot, "build/three.module.js"), resolve(vendor, "three.module.js"));
