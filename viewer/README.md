@@ -25,7 +25,7 @@ Open http://localhost:8080/. Use an HTTP server; browser module imports and data
 
 ## Deployment
 
-The repository-root `render.yaml` defines a separate Render Static Site with this folder as its root. Deploy this repository through Render's Blueprint flow, or create a Static Site using root directory `viewer`, build command `python -m pip install -r scripts/requirements.txt && npm ci && npm run build`, and publish directory `.`.
+Create a separate Render Static Site connected to this repository. Set root directory to `viewer`, build command to `python -m pip install -r scripts/requirements.txt && npm ci && npm run build`, and publish directory to `.`. This avoids changing the existing portfolio's Render service configuration.
 
 The generated `data/` folder is produced during each build. No user accounts or server-side database are required. The app loads a neuron's full outgoing connection shard only when a user selects a neuron.
 
